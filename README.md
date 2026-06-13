@@ -297,6 +297,7 @@ Key achievements:
 - Successfully detected fraudulent transactions in highly imbalanced datasets
 - Built a full-stack web application integrating Machine Learning and Data Analytics
 - Designed a professional fintech-inspired dashboard for fraud monitoring and analysis
+---
 
 # 🎯 Future Enhancements
 
@@ -346,9 +347,9 @@ Focused on building intelligent systems, data-driven applications, and real-worl
 - 🤖 Random Forest Machine Learning Model
 - 📈 Fraud Distribution & Performance Visualizations
 - 🎨 Modern FinTech-Inspired User Interface
-
+---
 # 📜 License
 
 This project is intended for educational and portfolio purposes.
-
+---
 ## ⭐ If you found this project useful, consider giving it a star.
