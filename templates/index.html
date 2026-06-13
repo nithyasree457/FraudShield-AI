@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FraudShield AI Enterprise</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<div class="background-grid"></div>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        🛡 FraudShield AI
+
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+
+        <a href="#upload">Analyze</a>
+
+        <a href="#analytics">Analytics</a>
+
+        <a href="#reports">Reports</a>
+
+    </div>
+
+</nav>
+
+<!-- HERO -->
+
+<section id="home" class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-tag">
+
+            AI-POWERED FINANCIAL SECURITY
+
+        </div>
+
+        <h1>
+
+            Detect Fraud.<br>
+
+            <span class="gradient-text">
+
+                Protect Loss.
+
+            </span>
+
+        </h1>
+
+        <p>
+
+            Advanced machine learning platform engineered
+            to analyze transaction behavior, identify suspicious
+            patterns, and prevent financial losses before they occur.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#upload" class="primary-btn">
+
+                Analyze Dataset
+
+            </a>
+
+            <a href="#analytics" class="secondary-btn">
+
+                View Analytics
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-preview">
+
+        <div class="preview-card">
+
+            <h3>Fraud Detection Engine</h3>
+
+            <div class="preview-stat">
+
+                <span>Total Transactions</span>
+
+                <strong>{{ total_transactions }}</strong>
+
+            </div>
+
+            <div class="preview-stat">
+
+                <span>Fraud Cases</span>
+
+                <strong>{{ fraud_cases }}</strong>
+
+            </div>
+
+            <div class="preview-stat">
+
+                <span>ROC-AUC</span>
+
+                <strong>{{ roc_auc }}</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <h3>Total Transactions</h3>
+
+        <p class="counter">{{ total_transactions }}</p>
+    </div>
+
+    <div class="stat-card">
+
+        <h3>Fraud Cases</h3>
+
+        <p>{{ fraud_cases }}</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h3>ROC-AUC</h3>
+
+        <p>{{ roc_auc }}</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h3>Model</h3>
+
+        <p>Random Forest</p>
+
+    </div>
+
+</section>
+
+<!-- UPLOAD -->
+
+<section id="upload" class="upload-section">
+
+    <h2>
+     Upload & Analyze
+     Financial Data
+</h2>
+
+    <p>
+
+
+        Upload CSV files and perform AI-powered fraud activity analysis.
+
+
+    </p>
+
+    <form
+        action="/upload"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <label class="upload-box">
+
+    <input
+        type="file"
+        name="file"
+        accept=".csv"
+        required
+    >
+
+    <div class="upload-content">
+
+        <div class="upload-icon">
+            📂
+        </div>
+
+        <h3>
+            Drag YourDataset Here
+        </h3>
+
+        <p>
+            CSV format • Secure upload • Instant analysis
+        </p>
+
+        <span class="browse-btn">
+
+            Browse Files
+
+        </span>
+
+    </div>
+
+</label>
+
+        <button type="submit" class="analyze-btn">
+
+            Analyze Dataset
+
+        </button>
+
+    </form>
+
+    {% if error %}
+
+    <div class="error-box">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+</section>
+{% if analysis %}
+
+<!-- RESULTS -->
+
+<section class="results-section">
+
+    <div class="section-header">
+
+        <span>ANALYSIS REPORT</span>
+
+        <h2>Fraud Detection Results</h2>
+
+    </div>
+
+    <div class="results-grid">
+
+        <div class="result-card">
+
+            <h3>Total Records</h3>
+
+            <p>{{ analysis.total }}</p>
+
+        </div>
+
+        <div class="result-card">
+
+            <h3>Fraud Detected</h3>
+
+            <p>{{ analysis.fraud }}</p>
+
+        </div>
+
+        <div class="result-card">
+
+            <h3>Normal Transactions</h3>
+
+            <p>{{ analysis.normal }}</p>
+
+        </div>
+
+        <div class="result-card">
+
+            <h3>Fraud Percentage</h3>
+
+            <p>{{ analysis.percent }}%</p>
+
+        </div>
+
+        <div class="result-card">
+
+            <h3>Risk Level</h3>
+
+            <p>{{ analysis.risk }}</p>
+
+        </div>
+
+        <div class="result-card">
+
+            <h3>Dataset</h3>
+
+            <p>{{ analysis.filename }}</p>
+
+        </div>
+
+    </div>
+    <div class="risk-meter">
+
+    <div class="circle">
+
+        {{ analysis.percent }}%
+
+    </div>
+
+    <h3>
+
+        {{ analysis.risk }}
+
+    </h3>
+
+</div>
+    <a href="/download" class="download-btn">
+
+        Download Analysis Report
+
+    </a>
+
+</section>
+
+{% endif %}
+
+<!-- ANALYTICS -->
+
+<section id="analytics" class="analytics">
+
+    <div class="section-header">
+
+        <span>MODEL PERFORMANCE</span>
+
+        <h2>Analytics Dashboard</h2>
+
+    </div>
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
+
+            <h3>Fraud Distribution</h3>
+
+            <canvas id="fraudPie"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <h3>Model Comparison</h3>
+
+            <img
+                src="{{ url_for('static', filename='model_comparison.png') }}"
+                alt="Model Comparison"
+            >
+
+        </div>
+
+        <div class="chart-card">
+
+            <h3>Confusion Matrix</h3>
+
+            <img
+                src="{{ url_for('static', filename='confusion_matrix.png') }}"
+                alt="Confusion Matrix"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about-section">
+
+    <div class="section-header">
+
+        <span>WHY FRAUDSHIELD</span>
+
+        <h2>Built For Modern Financial Security</h2>
+
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <h3>🤖 AI Detection</h3>
+
+            <p>
+
+                Uses machine learning to identify
+                suspicious transaction patterns.
+
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>⚡ Real-Time Analysis</h3>
+
+            <p>
+
+                Analyze uploaded datasets
+                instantly.
+
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>📊 Visual Analytics</h3>
+
+            <p>
+
+                Charts, reports and fraud
+                insights in one dashboard.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- REPORTS -->
+
+<section id="reports" class="reports">
+
+    <div class="section-header">
+
+        <span>REPORTS</span>
+
+        <h2>Download Security Reports</h2>
+
+    </div>
+
+    <p class="report-text">
+
+        Generate and export detailed fraud
+        detection reports for further analysis.
+
+    </p>
+
+    <a href="/download" class="download-btn">
+
+        Export Report
+
+    </a>
+
+</section>
+
+<section class="tech-stack">
+
+    <div class="section-header">
+
+        <span>TECHNOLOGY STACK</span>
+
+        <h2>Built With Modern Technologies</h2>
+
+    </div>
+
+    <div class="stack-grid">
+
+        <div class="stack-card">
+            🐍
+            <h3>Python</h3>
+        </div>
+
+        <div class="stack-card">
+            ⚡
+            <h3>Flask</h3>
+        </div>
+
+        <div class="stack-card">
+            📊
+            <h3>Pandas</h3>
+        </div>
+
+        <div class="stack-card">
+            🤖
+            <h3>Scikit-Learn</h3>
+        </div>
+
+        <div class="stack-card">
+            📈
+            <h3>Chart.js</h3>
+        </div>
+
+        <div class="stack-card">
+            🎨
+            <h3>HTML / CSS</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="project-highlight">
+
+    <div class="section-header">
+
+        <span>PROJECT OVERVIEW</span>
+
+        <h2>Project Highlights</h2>
+
+    </div>
+
+    <div class="highlight-grid">
+
+        <div class="highlight-card">
+            97.5% ROC-AUC
+        </div>
+
+        <div class="highlight-card">
+            Random Forest Model
+        </div>
+
+        <div class="highlight-card">
+            Interactive Analytics
+        </div>
+
+        <div class="highlight-card">
+            CSV Dataset Analysis
+        </div>
+
+        <div class="highlight-card">
+            Downloadable Reports
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-logo">
+
+        🛡 FraudShield AI
+
+    </div>
+
+    <p class="top">
+
+        AI Powered Fraud Detection Platform
+
+    </p>
+
+    <p class="developed">
+
+        (Built using Flask, Scikit-Learn,
+        Pandas and Machine Learning)
+
+    </p>
+    <p class="developer-credit">
+
+    ®Carfted & Developed by Nithi</p>
+
+</footer>
+
+<!-- PIE CHART -->
+
+<script>
+
+const fraudCount =
+parseInt("{{ analysis.fraud if analysis else 0 }}");
+
+const normalCount =
+parseInt("{{ analysis.normal if analysis else 0 }}");
+
+const pieCanvas =
+document.getElementById("fraudPie");
+
+if(pieCanvas){
+
+    new Chart(
+        pieCanvas,
+        {
+            type:"doughnut",
+
+            data:{
+
+                labels:[
+                    "Fraud",
+                    "Normal"
+                ],
+
+                datasets:[{
+
+                    data:[
+                        fraudCount,
+                        normalCount
+                    ],
+
+                    backgroundColor:[
+                        "#ff6b00",
+                        "#2563eb"
+                    ],
+
+                    borderWidth:0
+
+                }]
+
+            },
+
+            options:{
+
+                plugins:{
+
+                    legend:{
+
+                        labels:{
+
+                            color:"white"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+</script>
+
+<script>
+
+const counters =
+document.querySelectorAll('.counter');
+
+counters.forEach(counter=>{
+
+    const target =
+    Number(counter.innerText);
+
+    let count = 0;
+
+    function update(){
+
+        count += target/80;
+
+        if(count < target){
+
+            counter.innerText =
+            Math.floor(count);
+
+            requestAnimationFrame(update);
+
+        }else{
+
+            counter.innerText = target;
+
+        }
+
+    }
+
+    update();
+
+});
+
+</script>
+
+</body>
+
+</html>
