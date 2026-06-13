@@ -1,5 +1,3 @@
 dataset/creditcard.csv
 __pycache__/
-*.pyc
-
-.env
+*pyc
